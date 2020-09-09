@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+"""
+Create one note without audio
+"""
+
+import genanki
+
+from models import VOCAB_REVERSE
+
+
+class VocabNote(genanki.Note):
+    """
+    The Swahili audio shouldn't influence the GUID
+    """
+
+    @property
+    def guid(self):
+        return genanki.guid_for(self.fields[0], self.fields[1])
+
+
+def main():
+    """
+    Generate Anki deck
+    """
+
+    deck = genanki.Deck(1334343228801, "TEST Swahili")
+
+    output = "test1.apkg"
+    swahili = genanki.Package(deck)
+    note = VocabNote(
+                model=VOCAB_REVERSE,
+                fields=['moja (number)', 'one'],
+                )
+    deck.add_note(note)
+    swahili.write_to_file(output)
+
+
+if __name__ == "__main__":
+    main()
